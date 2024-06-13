@@ -26,7 +26,8 @@ with DAG(
 
     extract_task = PythonOperator(
         task_id='extract_data',
-        python_callable=extract_main
+        python_callable=extract_main,
+        do_xcom_push=True
     )
 
     transform_task = PythonOperator(
