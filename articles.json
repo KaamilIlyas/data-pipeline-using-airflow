@@ -1,0 +1,12 @@
+[
+    {
+        "title": "Example Title 1",
+        "link": "http://example.com/1",
+        "description": "Description 1"
+    },
+    {
+        "title": "Example Title 2",
+        "link": "http://example.com/2",
+        "description": "Description 2"
+    }
+]
