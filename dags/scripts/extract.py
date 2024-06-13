@@ -6,7 +6,6 @@ def extract_data(url):
     soup = BeautifulSoup(response.content, 'html.parser')
     articles = []
 
-
     for link in soup.find_all('a', attrs={'data-testid': ['external-anchor', 'internal-link']}):
         title_element = link.find('h2', attrs={'data-testid': 'card-headline'})
         description_element = link.find('p', attrs={'data-testid': 'card-description'})
@@ -22,6 +21,4 @@ def extract_data(url):
 
 def main():
     bbc_articles = extract_data('https://www.bbc.com')
-    
-
-
+    return bbc_articles  # Ensure this is returned for XCom

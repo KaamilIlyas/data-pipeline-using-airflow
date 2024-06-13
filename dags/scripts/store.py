@@ -1,38 +1,23 @@
 import json
 import os
+import subprocess
 
-def store_data(articles, filename):
-    # Save the articles to a file
+def store_data(articles, filename='articles.json'):
+    if isinstance(articles, str):
+        import json
+        articles = json.loads(articles)
+        
     with open(filename, 'w') as f:
         json.dump(articles, f, indent=4)
 
-    # Ensure that the file is tracked by DVC
     if not os.path.exists('.dvc'):
-        # Only initialize DVC if it hasn't been done in this project directory
         os.system('dvc init')
 
-    # Add the file to DVC tracking
-    os.system(f'dvc add {filename}')
-    
-    # Ensure the file is added to git
-    os.system(f'git add {filename}.dvc {filename} .gitignore')
-
-    # Commit changes to git
-    os.system(f'git commit -m "Add/update {filename}"')
-    
-    # Push the file to the DVC remote
-    os.system('dvc push')
-
-    # Push git changes to the remote repository
-    os.system('git push')
+    subprocess.run(['dvc', 'add', filename], check=True)
+    subprocess.run(['git', 'add', f'{filename}.dvc', filename, '.gitignore'], check=True)
+    subprocess.run(['git', 'commit', '-m', f'Add/update {filename}'], check=True)
+    subprocess.run(['git', 'push'], check=True)
+    subprocess.run(['dvc', 'push'], check=True)
 
 def main(articles):
-    store_data(articles, 'articles.json')
-
-if __name__ == "__main__":
-    # Example articles data
-    articles = [
-        {'title': 'Example Title 1', 'link': 'http://example.com/1', 'description': 'Description 1'},
-        {'title': 'Example Title 2', 'link': 'http://example.com/2', 'description': 'Description 2'},
-    ]
-    main(articles)
+    store_data(articles)
